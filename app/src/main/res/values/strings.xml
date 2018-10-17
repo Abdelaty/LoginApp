@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Login Application</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="forget_password">Forget Password</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="firebase_auth_login">FireBase Auth Login</string>
+    <string name="change_password">Change Password</string>
+    <string name="mode">Mode</string>
+    <string name="submit">Submit</string>
+    <string name="confirmed_password">Confirmed Password</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+
+</resources>

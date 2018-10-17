@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "995209375028",
+    "firebase_url": "https://loginapplication-648a0.firebaseio.com",
+    "project_id": "loginapplication-648a0",
+    "storage_bucket": "loginapplication-648a0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995209375028:android:df06a7fc6b53af7b",
+        "android_client_info": {
+          "package_name": "com.example.abdel.loginapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995209375028-o5l57ab1dsqdc9r6m8g59un32qeirpkn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSr2-sperxDwvhtf7NLFzEUdHsmwoM7FA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
