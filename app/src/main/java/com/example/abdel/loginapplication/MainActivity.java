@@ -3,20 +3,21 @@ package com.example.abdel.loginapplication;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 
 import com.example.abdel.loginapplication.AccountsActivity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -25,14 +26,35 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
     ProgressDialog PD;
-    DatabaseReference mDatabase;
-    private ArrayList<String> mCountries = new ArrayList<>();
-    ArrayAdapter<String> arrayAdapter;
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
-    private DatabaseReference dbRef = database.getReference();
+    RecyclerView recyclerView;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    CountriesNamesAdapter adapter;
+    DatabaseReference dbRef = database.getReference();
+    ArrayList<String> countriesNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        recyclerView = findViewById(R.id.rvNames);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        String id = "";
+        dbRef.child("0").child("name").child("common").
+                addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot adSnapshot : dataSnapshot.getChildren()) {
+                            ArrayList<String> countriesNames = (ArrayList<String>) dataSnapshot.getValue();
+                            recyclerView.setAdapter(new CountriesNamesAdapter(countriesNames));
+                            countriesNames.clear();
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         auth = FirebaseAuth.getInstance();
@@ -41,12 +63,7 @@ public class MainActivity extends AppCompatActivity {
         PD.setMessage("Loading...");
         PD.setCancelable(true);
         PD.setCanceledOnTouchOutside(false);
-        ListView countriesList = findViewById(R.id.countries_list);
         btnSignOut = (Button) findViewById(R.id.sign_out_button);
-        arrayAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_single_choice,
-                mCountries);
-        countriesList.setAdapter(arrayAdapter);
         btnSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,36 +83,5 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         super.onResume();
-    }
-
-    private void addChildEventListener() {
-        ChildEventListener childListener = new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                arrayAdapter.add(
-                        (String) dataSnapshot.child("name").child("common").getValue());
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        };
     }
 }

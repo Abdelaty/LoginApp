@@ -60,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                                                     LoginActivity.this,
                                                     "Authentication Failed",
                                                     Toast.LENGTH_LONG).show();
+
                                             Log.v("error", task.getResult().toString());
                                         } else {
                                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
