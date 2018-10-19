@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -32,20 +33,27 @@ public class MainActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference dbRef;
     List<ModelClass> list;
-    RecyclerView recyclerview;
-    CountriesNamesAdapter adapter;
+    RecyclerView recyclerView;
+    CountriesNamesAdapter recyclerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerview = (RecyclerView) findViewById(R.id.rvNames);
-        recyclerview.setHasFixedSize(true);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
 
+        recyclerAdapter = new CountriesNamesAdapter(list, MainActivity.this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+
+
+        recyclerView = (RecyclerView) findViewById(R.id.rvNames);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(recyclerAdapter);
         //database
-        database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("Countries");
+        dbRef = FirebaseDatabase.getInstance().getReference().child("Countries");
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         PD = new ProgressDialog(this);
@@ -75,34 +83,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void getFirebaseData() {
-        database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("Countries");
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        list = new ArrayList<>();
+        dbRef.addValueEventListener(new ValueEventListener() {
             @Override
+
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                list = new ArrayList<ModelClass>();
+                for (DataSnapshot mySnapshot : dataSnapshot.getChildren()) {
 
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                     ModelClass p = dataSnapshot.child("name").getValue(ModelClass.class);
-                    list.add(p);
-                 Object object;
-                    ArrayList<String> values = new ArrayList<String>();
-                    object = dataSnapshot.child("Countries").child("name").getValue();
-                    assert object != null;
-//                    values.add(object.toString());
-                    String value = dataSnapshot1.child("name").getValue(String.class);
+                    ModelClass modelClass = mySnapshot.getValue(ModelClass.class);
+                    String name = modelClass.getCountryName();
+                    String code = modelClass.getCode();
+                    modelClass.setCountryName(name);
+                    modelClass.setCode(code);
+                    list.add(modelClass);
+                    Log.d("FIREBASE_EVENET", name + ", " + code);
+                    recyclerAdapter.notifyDataSetChanged();
 
-                    Log.v("Value is ", value);
                 }
-                ;
-                recyclerview.setAdapter(adapter);
+
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
-
 
     }
 }

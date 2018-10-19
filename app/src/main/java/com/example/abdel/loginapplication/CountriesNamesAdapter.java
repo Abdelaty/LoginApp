@@ -1,5 +1,6 @@
 package com.example.abdel.loginapplication;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CountriesNamesAdapter extends RecyclerView.Adapter<CountriesNamesAdapter.ViewHolder> {
-    private ArrayList<String> values;
-    CountriesNamesAdapter(ArrayList<String> values) {
-        this.values = values;
+    private List<ModelClass> list;
+    Context context;
+    CountriesNamesAdapter(List<ModelClass> list,Context context) {
+        this.list = list;
+        this.context = context;
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -21,12 +24,36 @@ public class CountriesNamesAdapter extends RecyclerView.Adapter<CountriesNamesAd
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.name.setText(values.get(position));
+        ModelClass namesList = list.get(position);
+        holder.name.setText(namesList.getCountryName());
     }
 
     @Override
     public int getItemCount() {
-        return values.size();
+
+        int arr = 0;
+
+        try{
+            if(list.size()==0){
+
+                arr = 0;
+
+            }
+            else{
+
+                arr=list.size();
+            }
+
+
+
+        }catch (Exception e){
+
+
+
+        }
+
+        return arr;
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
