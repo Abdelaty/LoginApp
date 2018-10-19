@@ -83,15 +83,15 @@ public class MainActivity extends AppCompatActivity {
                 list = new ArrayList<ModelClass>();
 
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    ModelClass p = dataSnapshot.getValue(ModelClass.class);
+                     ModelClass p = dataSnapshot.child("name").getValue(ModelClass.class);
                     list.add(p);
-                 /* Object object;
+                 Object object;
                     ArrayList<String> values = new ArrayList<String>();
-                    object = dataSnapshot.getValue();
+                    object = dataSnapshot.child("Countries").child("name").getValue();
                     assert object != null;
-                    values.add(object.toString());
-                    recyclerview.setAdapter(adapter);*/
-                    String value = dataSnapshot1.getValue(String.class);
+//                    values.add(object.toString());
+                    String value = dataSnapshot1.child("name").getValue(String.class);
+
                     Log.v("Value is ", value);
                 }
                 ;
