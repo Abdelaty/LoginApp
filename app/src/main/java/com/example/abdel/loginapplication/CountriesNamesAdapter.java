@@ -10,68 +10,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CountriesNamesAdapter extends RecyclerView.Adapter<CountriesNamesAdapter.ViewHolder> {
-
-    private List<String> mData;
-    private LayoutInflater mInflater;
-    private ItemClickListener mClickListener;
-
-    // data is passed into the constructor
-    CountriesNamesAdapter(ArrayList<String> data) {
-        this.mData = data;
+    private ArrayList<String> values;
+    CountriesNamesAdapter(ArrayList<String> values) {
+        this.values = values;
     }
-
-    public CountriesNamesAdapter(MainActivity mainActivity, ArrayList<String> countriesNames) {
-
-    }
-
-
-    // inflates the row layout from xml when needed
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.recyclerview_row, parent, false);
-        return new ViewHolder(view);
+        return null;
     }
-    // binds the data to the TextView in each row
 
+    @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String countryName = mData.get(position);
-        holder.myTextView.setText(countryName);
+        holder.name.setText(values.get(position));
     }
 
-    // total number of rows
     @Override
     public int getItemCount() {
-        return mData.size();
+        return values.size();
     }
 
-    // convenience method for getting data at click position
-    String getItem(int id) {
-        return mData.get(id);
-    }
-
-    // allows clicks events to be caught
-    void setClickListener(ItemClickListener itemClickListener) {
-        this.mClickListener = itemClickListener;
-    }
-
-    // parent activity will implement this method to respond to click events
-    public interface ItemClickListener {
-        void onItemClick(View view, int position);
-    }
-
-    // stores and recycles views as they are scrolled off screen
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        TextView myTextView;
-
+    class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView name;
         ViewHolder(View itemView) {
             super(itemView);
-            myTextView = itemView.findViewById(R.id.tvCountryName);
-            itemView.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View view) {
-            if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
+            name = (TextView) itemView.findViewById(R.id.tvCountryName);
         }
     }
 }

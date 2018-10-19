@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,43 +21,31 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity {
     Button btnSignOut;
     FirebaseAuth auth;
     FirebaseUser user;
     ProgressDialog PD;
-    RecyclerView recyclerView;
-
-    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    FirebaseDatabase database;
+    DatabaseReference dbRef;
+    List<ModelClass> list;
+    RecyclerView recyclerview;
     CountriesNamesAdapter adapter;
-    DatabaseReference dbRef = database.getReference();
-    ArrayList<String> countriesNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        recyclerView = findViewById(R.id.rvNames);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        String id = "";
-        dbRef.child("0").child("name").child("common").
-                addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        for (DataSnapshot adSnapshot : dataSnapshot.getChildren()) {
-                            ArrayList<String> countriesNames = (ArrayList<String>) dataSnapshot.getValue();
-                            recyclerView.setAdapter(new CountriesNamesAdapter(countriesNames));
-                            countriesNames.clear();
-                        }
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-                    }
-                });
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        recyclerview = (RecyclerView) findViewById(R.id.rvNames);
+        recyclerview.setHasFixedSize(true);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this));
+
+        //database
+        database = FirebaseDatabase.getInstance();
+        dbRef = database.getReference("Countries");
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         PD = new ProgressDialog(this);
@@ -73,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
+        getFirebaseData();
     }
 
     @Override
@@ -83,5 +72,37 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
         super.onResume();
+    }
+
+    void getFirebaseData() {
+        database = FirebaseDatabase.getInstance();
+        dbRef = database.getReference("Countries");
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list = new ArrayList<ModelClass>();
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    ModelClass p = dataSnapshot.getValue(ModelClass.class);
+                    list.add(p);
+                 /* Object object;
+                    ArrayList<String> values = new ArrayList<String>();
+                    object = dataSnapshot.getValue();
+                    assert object != null;
+                    values.add(object.toString());
+                    recyclerview.setAdapter(adapter);*/
+                    String value = dataSnapshot1.getValue(String.class);
+                    Log.v("Value is ", value);
+                }
+                ;
+                recyclerview.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+
     }
 }
