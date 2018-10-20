@@ -19,42 +19,25 @@ public class CountriesNamesAdapter extends RecyclerView.Adapter<CountriesNamesAd
     }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.recyclerview_row, parent, false);
+        return new ViewHolder(v);
+
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         ModelClass namesList = list.get(position);
         holder.name.setText(namesList.getCountryName());
+
     }
 
-    @Override
-    public int getItemCount() {
-
-        int arr = 0;
-
-        try{
-            if(list.size()==0){
-
-                arr = 0;
-
-            }
-            else{
-
-                arr=list.size();
-            }
 
 
-
-        }catch (Exception e){
-
-
-
+        @Override
+        public int getItemCount() {
+            return list.size();
         }
-
-        return arr;
-
-    }
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;

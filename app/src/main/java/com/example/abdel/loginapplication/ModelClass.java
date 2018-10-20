@@ -3,6 +3,11 @@ package com.example.abdel.loginapplication;
 public class ModelClass {
     String name, code;
 
+    public ModelClass(String name, String code) {
+        this.name = name;
+        this.code = code;
+    }
+
     public ModelClass() {
     }
 

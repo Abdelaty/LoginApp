@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressDialog PD;
     FirebaseDatabase database;
     DatabaseReference dbRef;
-    List<ModelClass> list;
+    List<ModelClass> list= new ArrayList<>();
     RecyclerView recyclerView;
     CountriesNamesAdapter recyclerAdapter;
 
@@ -40,19 +40,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        recyclerView = (RecyclerView) findViewById(R.id.rvNames);
 
         recyclerAdapter = new CountriesNamesAdapter(list, MainActivity.this);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(MainActivity.this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
 
-        recyclerView = (RecyclerView) findViewById(R.id.rvNames);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
         recyclerView.setAdapter(recyclerAdapter);
         //database
+
         dbRef = FirebaseDatabase.getInstance().getReference().child("Countries");
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         getFirebaseData();
+
     }
 
     @Override
@@ -83,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void getFirebaseData() {
-        list = new ArrayList<>();
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
 
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
                     String code = modelClass.getCode();
                     modelClass.setCountryName(name);
                     modelClass.setCode(code);
+
                     list.add(modelClass);
                     Log.d("FIREBASE_EVENET", name + ", " + code);
                     recyclerAdapter.notifyDataSetChanged();
