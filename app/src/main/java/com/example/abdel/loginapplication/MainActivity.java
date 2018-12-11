@@ -53,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         recyclerView.setAdapter(recyclerAdapter);
-        //database
 
         dbRef = FirebaseDatabase.getInstance().getReference().child("Countries");
         auth = FirebaseAuth.getInstance();
