@@ -1,4 +1,6 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/white"
@@ -6,26 +8,20 @@
     android:orientation="vertical"
     android:padding="@dimen/padding">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvNames"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="@dimen/padding"
+        android:layout_marginLeft="@dimen/padding"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginEnd="@dimen/padding"
+        android:layout_marginRight="@dimen/padding"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvNames"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/list_height"/>
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/sign_out_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/button_top_margin"
-        android:background="@color/colorPrimary"
-        android:text="@string/sign_out"
-        android:textColor="@color/white" />
-
-
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

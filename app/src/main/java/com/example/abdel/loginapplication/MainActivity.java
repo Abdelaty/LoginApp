@@ -9,8 +9,11 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.abdel.loginapplication.AccountsActivity.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,9 +33,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     FirebaseUser user;
     ProgressDialog PD;
-    FirebaseDatabase database;
     DatabaseReference dbRef;
-    List<ModelClass> list= new ArrayList<>();
+    List<ModelClass> list = new ArrayList<>();
     RecyclerView recyclerView;
     CountriesNamesAdapter recyclerAdapter;
 
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.rvNames);
-
+        setTitle("Countries Names");
         recyclerAdapter = new CountriesNamesAdapter(list, MainActivity.this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
 
@@ -61,16 +63,6 @@ public class MainActivity extends AppCompatActivity {
         PD.setMessage("Loading...");
         PD.setCancelable(true);
         PD.setCanceledOnTouchOutside(false);
-        btnSignOut = (Button) findViewById(R.id.sign_out_button);
-        btnSignOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                auth.signOut();
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
-
-            }
-        });
         getFirebaseData();
 
     }
@@ -110,5 +102,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemThatWasClickedId = item.getItemId();
+        if (itemThatWasClickedId == R.id.sign_out) {
+            auth.signOut();
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+            Log.v("Auth Event", "User Logout ");
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

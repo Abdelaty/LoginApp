@@ -5,7 +5,7 @@
     android:background="@color/white"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/signup_padding">
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -16,11 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/email"
-
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:autofillHints=" " />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -38,7 +38,8 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:singleLine="true"
-            android:textColor="@color/colorPrimary" />
+            android:textColor="@color/colorPrimary"
+            android:autofillHints=" " />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -49,13 +50,11 @@
         android:layout_marginTop="20dip"
         android:background="@color/colorPrimary"
         android:text="@string/sign_in"
-        android:textColor="@color/white" />
-
-    <!-- Link to Login Screen -->
+        android:textColor="@color/white"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/sign_up_button"
-        style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/padding"
@@ -63,8 +62,6 @@
         android:text="@string/sign_up"
         android:textColor="@color/white"
         android:textStyle="bold" />
-
-    <!-- Link to Forget Password -->
 
     <TextView
         android:id="@+id/forget_password_button"
